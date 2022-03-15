@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gameplay>
+    <details first="max" second="second"/>
+    <Game>
+        <step x="1" y="1"/>
+        <step x="2" y="2"/>
+        <step x="2" y="1"/>
+        <step x="1" y="3"/>
+        <step x="3" y="1"/>
+    </Game>
+    <win winner="max"/>
+</gameplay>

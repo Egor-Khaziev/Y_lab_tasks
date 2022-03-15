@@ -1,7 +1,10 @@
 package com.egorkhaziev.y_lab.vsPlayer;
 
 import com.egorkhaziev.y_lab.menu.GameMenu;
+import com.egorkhaziev.y_lab.vsPlayer.XML.XMLout;
 import com.egorkhaziev.y_lab.vsPlayer.model.Player;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.*;
 import java.util.*;
@@ -9,11 +12,16 @@ import java.util.*;
 public class XOGamePlayerVsPlayer {
 
     private final GameMenu gameMenu;
+    private final XMLout xmLout;
+
+    private Element gamePlay;
+    private Document document;
+    private Element game;
 
     private char[][] gameMap;
     public int x = 0;
     public int y = 0;
-    public Scanner sc = new Scanner(System.in);
+    public Scanner sc;
 
     private Map<String, Player> playerList = new HashMap<>();
 
@@ -27,13 +35,25 @@ public class XOGamePlayerVsPlayer {
     private final char O_DOT = 'O';
 
     public static int gameCount;
+    public static int gameNumber;
 
     public XOGamePlayerVsPlayer(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
+        this.xmLout = new XMLout();
+        this.document = XMLout.createDocument();
+        this.sc = new Scanner(System.in);
+    }
+
+    public void end(){
+        sc.close();
     }
 
     //old/new
     public void start() {
+
+
+        gamePlay = document.createElement("gameplay");
+        document.appendChild(gamePlay);
 
         System.out.println("I glad to see you in classic XO game!\n" +
                 "The winner is the one who takes 3 cells in a row\n" +
@@ -43,6 +63,9 @@ public class XOGamePlayerVsPlayer {
         loadPlayers();
         //авторизация игроков
         authorization();
+        //XML новая партия игры
+        game = document.createElement("Game");
+        gamePlay.appendChild(game);
         //инициация поля
         initMap();
         //отрисовка поля
@@ -62,7 +85,10 @@ public class XOGamePlayerVsPlayer {
 
         //сохранение игроков в файл строкой
         savePlayers();
-
+        //XML сохранение
+        String fileName = "game-" + gameNumber + ".xml";
+        XMLout.saveAsFile(document, fileName);
+        gameNumber++;
         //new
         againGameQuestion();
     }
@@ -120,6 +146,10 @@ public class XOGamePlayerVsPlayer {
                 if (isWin(dot)) {
                     System.out.println("FINISH");
 
+                    //XML победитель
+                    Element win = XMLout.createWin(document, player.getName());
+                    gamePlay.appendChild(win);
+
                     gameFinished =true;
                     //сохранение отчета в файл
                     saveToFile(player, enemy);
@@ -151,6 +181,11 @@ public class XOGamePlayerVsPlayer {
 
         player1 = login("Player 1");
         player2 = login("Player 2");
+
+        //XML
+        Element details = XMLout.createDetails(document, player1.getName(), player2.getName());
+        gamePlay.appendChild(details);
+
 
         System.out.println("\nWelcome " + player1.toString() + "\n***********  VS  ***********");
         System.out.println("Welcome " + player2.toString());
@@ -216,6 +251,9 @@ public class XOGamePlayerVsPlayer {
     private boolean readyToStep() {
         if (gameCount == 0) {
             System.out.println("FRIENDLY WIN");
+
+            Element win = XMLout.createWin(document, "no winner");
+            gamePlay.appendChild(win);
             return false;
         }
         return true;
@@ -229,6 +267,10 @@ public class XOGamePlayerVsPlayer {
         if (gameMap.length >= x && gameMap[0].length >= y && (gameMap[x - 1][y - 1] != 'X' && gameMap[x - 1][y - 1] != 'O')) {
             gameMap[x - 1][y - 1] = dot;
             gameCount--;
+            //XML ход
+            Element step = XMLout.createXMLStep(document, player.getName(), x, y);
+            game.appendChild(step);
+
         } else {
             paintMap();
             System.out.println("It is not correct or free");
