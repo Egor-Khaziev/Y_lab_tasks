@@ -44,10 +44,6 @@ public class XOGamePlayerVsPlayer {
         this.sc = new Scanner(System.in);
     }
 
-    public void end(){
-        sc.close();
-    }
-
     //old/new
     public void start() {
 

@@ -52,7 +52,6 @@ public class GameMenu {
 
                 //выход
             case (3):
-                PvP.end();
                 sc.close();
                 break;
 

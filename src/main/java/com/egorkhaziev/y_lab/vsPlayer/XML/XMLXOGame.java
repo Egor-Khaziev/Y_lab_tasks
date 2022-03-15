@@ -20,7 +20,7 @@ public class XMLXOGame {
     }
 
     public void start() {
-        System.out.print("\nPlease input your save game: ");
+        System.out.print("\nPlease input your save game (without '.xml', example 'game-0') : ");
         xmlGame = sc.nextLine()+".xml";
 
         File file = new File(xmlGame);
