@@ -40,8 +40,7 @@ public class XMLout {
         Element xmlStep = doc.createElement("Step");
         xmlStep.setAttribute("num", String.valueOf(num));
         xmlStep.setAttribute("playerId", String.valueOf(playerId));
-        xmlStep.setAttribute("x", String.valueOf(x));
-        xmlStep.setAttribute("y", String.valueOf(y));
+        xmlStep.setTextContent(x+""+y);
         return xmlStep;
     }
 

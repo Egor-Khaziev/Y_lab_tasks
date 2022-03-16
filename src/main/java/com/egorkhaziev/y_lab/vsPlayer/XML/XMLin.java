@@ -71,8 +71,9 @@ public class XMLin {
                 Element eStep = (Element) node;
 
                 Step step = new Step();
-                step.setX(Integer.parseInt(eStep.getAttribute("x")));
-                step.setY(Integer.parseInt(eStep.getAttribute("y")));
+                String textContentTemp = eStep.getTextContent();
+                step.setX(Integer.parseInt(textContentTemp.substring(0, 1)));
+                step.setY(Integer.parseInt(textContentTemp.substring(1, 2)));
                 step.setPlayerId(Integer.parseInt(eStep.getAttribute("playerId")));
                 step.setNumStep(Integer.parseInt(eStep.getAttribute("num")));
 
