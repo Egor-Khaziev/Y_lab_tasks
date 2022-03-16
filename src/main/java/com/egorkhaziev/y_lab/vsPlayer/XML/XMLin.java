@@ -1,6 +1,7 @@
 package com.egorkhaziev.y_lab.vsPlayer.XML;
 
 import com.egorkhaziev.y_lab.menu.GameMenu;
+import com.egorkhaziev.y_lab.vsPlayer.model.Player;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,11 +21,11 @@ public class XMLin {
 
     private static ArrayList<Step> steps;
     private static String winner;
-    private static XMLDetails details;
+    private static ArrayList<Player> players;
 
     private final char EMPTY_DOT = '*';
-    private static final char X_DOT = 'X';
-    private static final char O_DOT = 'O';
+    private static char X_DOT = 'X';
+    private static char O_DOT = 'O';
 
     private char[][] gameMap;
 
@@ -32,7 +33,8 @@ public class XMLin {
 
     public static void readXML(String fileName) throws ParserConfigurationException, IOException, SAXException {
         steps = new ArrayList();
-        winner = "no Winner";
+        winner = "Draw!";
+        players = new ArrayList();
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -41,18 +43,24 @@ public class XMLin {
 
 
         document.getDocumentElement().normalize();
-        NodeList detailsList = document.getElementsByTagName("details");
-        NodeList stepList = document.getElementsByTagName("step");
-        NodeList winnerList = document.getElementsByTagName("win");
+        NodeList playerList = document.getElementsByTagName("Player");
+        NodeList stepList = document.getElementsByTagName("Step");
+        NodeList GameResult = document.getElementsByTagName("GameResult");
 
 
-        //кто первый + имена
-        Node detailsNode = detailsList.item(0);
-        if (detailsNode.getNodeType() == Node.ELEMENT_NODE) {
-            Element eDetails = (Element) detailsNode;
-            details = new XMLDetails();
-            details.setFirstPlayer(eDetails.getAttribute("first"));
-            details.setSecondPlayer(eDetails.getAttribute("second"));
+        //Игроки
+        for (int i = 0; i < playerList.getLength(); i++) {
+
+            Node node = playerList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element ePlayer = (Element) node;
+
+                Player player = new Player();
+                player.setName(ePlayer.getAttribute("name"));
+                player.setId(Integer.parseInt(ePlayer.getAttribute("id")));
+
+                players.add(player);
+            }
         }
 
         //Шаги
@@ -65,13 +73,15 @@ public class XMLin {
                 Step step = new Step();
                 step.setX(Integer.parseInt(eStep.getAttribute("x")));
                 step.setY(Integer.parseInt(eStep.getAttribute("y")));
+                step.setPlayerId(Integer.parseInt(eStep.getAttribute("playerId")));
+                step.setNumStep(Integer.parseInt(eStep.getAttribute("num")));
 
                 steps.add(step);
             }
         }
 
         //победитель
-        Node winnerNode = winnerList.item(0);
+        Node winnerNode = GameResult.item(0);
         if (winnerNode.getNodeType() == Node.ELEMENT_NODE) {
             Element eWinner = (Element) winnerNode;
             winner = eWinner.getAttribute("winner");
@@ -82,15 +92,24 @@ public class XMLin {
 
     public static void play() {
         XMLin xmLin = new XMLin();
+
+        if(players.size()==3){
+            winner = players.get(2).getName();
+        }
+
+
+
+        System.out.println(players.get(0).getName() + " VS " + players.get(1).getName());
         xmLin.initMap();
         xmLin.paintMap();
 
         for (int i = 0; i <= steps.size()-1; i++) {
-//            System.out.println("step "+((i % 2 == 1) ? details.firstPlayer : details.secondPlayer));
+
             int x = steps.get(i).getX();
             int y = steps.get(i).getY();
             xmLin.gameMap[x - 1][y - 1] = ((i % 2 == 1) ? X_DOT : O_DOT);
             xmLin.paintMap();
+            System.out.println("step "+((i % 2 == 1) ? players.get(1).getName() : players.get(0).getName()));
             xmLin.sleeping(1000);
         }
 

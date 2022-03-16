@@ -28,3 +28,15 @@ second - Loss
 Wed Mar 16 02:20:39 GMT+06:00 2022 - Game finished 
 zero - Winner
 sidny - Loss
+Wed Mar 16 15:49:33 GMT+06:00 2022 - Game finished 
+max - Winner
+zero - Loss
+Wed Mar 16 15:52:14 GMT+06:00 2022 - Game finished 
+max - Winner
+zero - Loss
+Wed Mar 16 16:43:01 GMT+06:00 2022 - Game finished 
+max - Winner
+zero - Loss
+Wed Mar 16 17:59:16 GMT+06:00 2022 - Game finished 
+asf - Winner
+asg - Loss

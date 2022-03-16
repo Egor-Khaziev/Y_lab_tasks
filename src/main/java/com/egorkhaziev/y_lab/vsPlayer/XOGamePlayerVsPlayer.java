@@ -36,18 +36,20 @@ public class XOGamePlayerVsPlayer {
 
     public static int gameCount;
     public static int gameNumber;
+    public static int gameStep;
 
     public XOGamePlayerVsPlayer(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
         this.xmLout = new XMLout();
-        this.document = XMLout.createDocument();
+
         this.sc = new Scanner(System.in);
     }
 
     //old/new
     public void start() {
+        gameStep=1;
 
-
+        document = XMLout.createDocument();
         gamePlay = document.createElement("gameplay");
         document.appendChild(gamePlay);
 
@@ -142,9 +144,12 @@ public class XOGamePlayerVsPlayer {
                 if (isWin(dot)) {
                     System.out.println("FINISH");
 
+
                     //XML победитель
-                    Element win = XMLout.createWin(document, player.getName());
-                    gamePlay.appendChild(win);
+                    Element winner = XMLout.createXMLPlayer(document, player.getId(), player.getName(), String.valueOf(dot));
+
+                    Element gameResult = XMLout.createGameResult(document, winner);
+                    gamePlay.appendChild(gameResult);
 
                     gameFinished =true;
                     //сохранение отчета в файл
@@ -179,9 +184,10 @@ public class XOGamePlayerVsPlayer {
         player2 = login("Player 2");
 
         //XML
-        Element details = XMLout.createDetails(document, player1.getName(), player2.getName());
-        gamePlay.appendChild(details);
-
+        Element playerOne = XMLout.createXMLPlayer(document, 1, player1.getName(), "X");
+        Element playerTwo = XMLout.createXMLPlayer(document, 2, player2.getName(), "O");
+        gamePlay.appendChild(playerOne);
+        gamePlay.appendChild(playerTwo);
 
         System.out.println("\nWelcome " + player1.toString() + "\n***********  VS  ***********");
         System.out.println("Welcome " + player2.toString());
@@ -248,8 +254,9 @@ public class XOGamePlayerVsPlayer {
         if (gameCount == 0) {
             System.out.println("FRIENDLY WIN");
 
-            Element win = XMLout.createWin(document, "no winner");
-            gamePlay.appendChild(win);
+            Element gameResult = XMLout.createGameResult(document);
+            gamePlay.appendChild(gameResult);
+            gameFinished = true;
             return false;
         }
         return true;
@@ -264,8 +271,9 @@ public class XOGamePlayerVsPlayer {
             gameMap[x - 1][y - 1] = dot;
             gameCount--;
             //XML ход
-            Element step = XMLout.createXMLStep(document, player.getName(), x, y);
+            Element step = XMLout.createXMLStep(document, gameStep, gameCount%2==0?1:2, x, y);
             game.appendChild(step);
+            gameStep++;
 
         } else {
             paintMap();

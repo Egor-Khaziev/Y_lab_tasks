@@ -20,6 +20,8 @@ public class Player implements Serializable {
     private int loss;
     private int seriesWin;
 
+    private int Id;
+
     // space for other feature
 
 

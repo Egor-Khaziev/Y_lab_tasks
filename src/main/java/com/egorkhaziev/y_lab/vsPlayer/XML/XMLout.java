@@ -28,24 +28,33 @@ public class XMLout {
         return doc;
     }
 
-    public static Element createXMLStep(Document doc, String playerName, int x, int y){
-        Element xmlStep = doc.createElement("step");
+    public static Element createXMLPlayer(Document doc, int id, String name, String symbol) {
+        Element player = doc.createElement("Player");
+        player.setAttribute("id", String.valueOf(id));
+        player.setAttribute("name", name);
+        player.setAttribute("symbol", symbol);
+        return player;
+    }
+
+    public static Element createXMLStep(Document doc,int num, int playerId, int x, int y){
+        Element xmlStep = doc.createElement("Step");
+        xmlStep.setAttribute("num", String.valueOf(num));
+        xmlStep.setAttribute("playerId", String.valueOf(playerId));
         xmlStep.setAttribute("x", String.valueOf(x));
         xmlStep.setAttribute("y", String.valueOf(y));
         return xmlStep;
     }
 
-    public static Element createWin(Document doc, String winner){
-        Element win = doc.createElement("win");
-        win.setAttribute("winner", winner);
-        return win;
+    public static Element createGameResult(Document doc){
+        Element gameResult = doc.createElement("GameResult");
+        gameResult.setTextContent("Draw!");
+        return gameResult;
     }
 
-    public static Element createDetails(Document doc, String first, String second){
-        Element details = doc.createElement("details");
-        details.setAttribute("first", first);
-        details.setAttribute("second", second);
-        return details;
+    public static Element createGameResult(Document doc, Element winner){
+        Element gameResult = doc.createElement("GameResult");
+        gameResult.appendChild(winner);
+        return gameResult;
     }
 
     public static void saveAsFile(Document document, String fileName) {
