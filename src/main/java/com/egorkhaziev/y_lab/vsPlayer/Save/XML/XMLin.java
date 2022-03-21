@@ -3,7 +3,7 @@ package com.egorkhaziev.y_lab.vsPlayer.Save.XML;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.GamePlay;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Step;
 import com.egorkhaziev.y_lab.vsPlayer.Save.ReadSaveGame;
-import com.egorkhaziev.y_lab.vsPlayer.model.Player;
+import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,22 +12,25 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class XMLin implements ReadSaveGame {
 
     List<Step> steps;
-    List<Player> players;
+    List<PlayerGame> playerGames;
+    PlayerGame winner;
 
     GamePlay gamePlay;
 
     @Override
     public GamePlay readFile(String fileName) throws Exception {
+
         gamePlay = new GamePlay();
+        steps = new ArrayList<>();
+        playerGames = new ArrayList<>();
+        winner = null;
 
-
-        steps = gamePlay.getGame().getSteps();
-        players = gamePlay.getPlayers();
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -36,7 +39,7 @@ public class XMLin implements ReadSaveGame {
 
 
         document.getDocumentElement().normalize();
-        NodeList playerList = document.getElementsByTagName("Player");
+        NodeList playerList = document.getElementsByTagName("PlayerGame");
         NodeList stepList = document.getElementsByTagName("Step");
         NodeList GameResult = document.getElementsByTagName("GameResult");
 
@@ -48,11 +51,11 @@ public class XMLin implements ReadSaveGame {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element ePlayer = (Element) node;
 
-                Player player = new Player();
-                player.setName(ePlayer.getAttribute("name"));
-                player.setId(Integer.parseInt(ePlayer.getAttribute("id")));
+                PlayerGame playerGame = new PlayerGame();
+                playerGame.setName(ePlayer.getAttribute("name"));
+                playerGame.setId(Integer.parseInt(ePlayer.getAttribute("id")));
 
-                players.add(player);
+                playerGames.add(playerGame);
             }
         }
 
@@ -74,18 +77,18 @@ public class XMLin implements ReadSaveGame {
             }
         }
 
-        /** Нужно проверить срабатывание*/
-//        //победитель
-//        Node winnerNode = GameResult.item(0);
-//        if (winnerNode.getNodeType() == Node.ELEMENT_NODE) {
-//
-//        Element eWinner = (Element) winnerNode;
-//
-//        winner = new Player();
-//        winner.setName(eWinner.getAttribute("name"));
-//        winner.setId(Integer.parseInt(eWinner.getAttribute("id")));
-//
-//        }
+        //победитель
+        if (GameResult.getLength() > 0) {
+
+            if(playerGames.size()==3){
+                winner = playerGames.get(2);
+            }
+
+        }
+
+        gamePlay.setPlayerGames(playerGames);
+        gamePlay.getGame().setSteps(steps);
+        gamePlay.getGameResult().setWinner(winner);
 
         return gamePlay;
     }

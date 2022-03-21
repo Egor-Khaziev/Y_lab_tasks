@@ -1,9 +1,8 @@
 package com.egorkhaziev.y_lab.vsPlayer.Save;
 
 import com.egorkhaziev.y_lab.GameMenu;
-import com.egorkhaziev.y_lab.vsPlayer.Save.JSON.ControllerJSON;
+import com.egorkhaziev.y_lab.vsPlayer.Save.JSON.JSONout;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.GamePlay;
-import com.egorkhaziev.y_lab.vsPlayer.Save.XML.ControllerXML;
 import com.egorkhaziev.y_lab.vsPlayer.Save.XML.XMLout;
 
 import java.util.Scanner;
@@ -45,7 +44,7 @@ public class MenuSaveXOGame {
 
             //игрок vs ИИ
             case (1):
-                new ControllerJSON(gamePlay, gameMenu.getGameNumber());
+                new JSONout(gamePlay, gameMenu.getGameNumber());
                 break;
 
             //игрок vs игрок

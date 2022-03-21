@@ -1,6 +1,6 @@
 package com.egorkhaziev.y_lab.vsPlayer.Save.Model;
 
-import com.egorkhaziev.y_lab.vsPlayer.model.Player;
+import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -9,14 +9,17 @@ import java.util.List;
 @Data
 public class GamePlay {
 
-    List<Player> players;
+    private List<PlayerGame> playerGames;
 
-    Game game;
+    private Game game;
 
-    GameResult GameResult;
+    private GameResult gameResult;
 
     public GamePlay() {
         this.game = new Game();
-        players = new ArrayList<>();
+        playerGames = new ArrayList<>();
+        gameResult = new GameResult();
     }
+
+
 }

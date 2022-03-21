@@ -1,5 +1,6 @@
 package com.egorkhaziev.y_lab.vsPlayer.model;
 
+import com.egorkhaziev.y_lab.vsPlayer.Save.JSON.DTO.Player;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-public class Player implements Serializable {
+public class PlayerGame extends Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,7 +26,7 @@ public class Player implements Serializable {
     // space for other feature
 
 
-    public Player(String name) {
+    public PlayerGame(String name) {
         this.name = name;
 
     }

@@ -1,16 +1,14 @@
 package com.egorkhaziev.y_lab.vsPlayer.Save.Model;
 
-import com.egorkhaziev.y_lab.vsPlayer.model.Player;
+import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
+import lombok.Data;
 
+@Data
 public class GameResult {
 
-    private Player player;
+    private PlayerGame winner;
 
-    public GameResult(Player player) {
-        this.player = player;
+    public GameResult() {
     }
 
-    public Player getPlayer() {
-        return player;
-    }
 }

@@ -36,8 +36,8 @@ public class GameMenu {
         System.out.println(
                 "\n\n***********************************************************************\n" +
                 "\nPlease change your game: \n \n " +
-                "   1. XO game (modified) - Player vs PC (my experiment from 28.01.2021) \n " +
-                "   2. XO game - Player vs Player\n " +
+                "   1. XO game (modified) - PlayerGame vs PC (my experiment from 28.01.2021) \n " +
+                "   2. XO game - PlayerGame vs PlayerGame\n " +
                 "   3. Quit\n\n" +
                 "   0. Repeat game ");
 

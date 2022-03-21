@@ -41,7 +41,6 @@ public class MenuViewXOGame {
             gameMenu.changeGame();
         }
 
-        viewSaveGame.play();
     }
 
 
@@ -49,10 +48,10 @@ public class MenuViewXOGame {
 
         try {
             if(gameFile.toLowerCase(Locale.ROOT).endsWith(".xml")){
-                xmlIn.readFile(gameFile);
+                viewSaveGame.play(xmlIn.readFile(gameFile));
             }
             if(gameFile.toLowerCase(Locale.ROOT).endsWith(".json")){
-                jsonIn.readFile(gameFile);
+                viewSaveGame.play(jsonIn.readFile(gameFile));
             }
 
 
