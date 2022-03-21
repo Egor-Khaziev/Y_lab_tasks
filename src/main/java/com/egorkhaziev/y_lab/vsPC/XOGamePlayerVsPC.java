@@ -1,6 +1,6 @@
 package com.egorkhaziev.y_lab.vsPC;
 
-import com.egorkhaziev.y_lab.menu.GameMenu;
+import com.egorkhaziev.y_lab.GameMenu;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 

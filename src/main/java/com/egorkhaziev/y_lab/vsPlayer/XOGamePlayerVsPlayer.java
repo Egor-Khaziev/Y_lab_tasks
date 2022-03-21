@@ -1,10 +1,9 @@
 package com.egorkhaziev.y_lab.vsPlayer;
 
-import com.egorkhaziev.y_lab.menu.GameMenu;
-import com.egorkhaziev.y_lab.vsPlayer.XML.XMLout;
+import com.egorkhaziev.y_lab.GameMenu;
+import com.egorkhaziev.y_lab.vsPlayer.Save.MenuSaveXOGame;
+import com.egorkhaziev.y_lab.vsPlayer.Save.Model.*;
 import com.egorkhaziev.y_lab.vsPlayer.model.Player;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import java.io.*;
 import java.util.*;
@@ -12,11 +11,8 @@ import java.util.*;
 public class XOGamePlayerVsPlayer {
 
     private final GameMenu gameMenu;
-    private final XMLout xmLout;
 
-    private Element gamePlay;
-    private Document document;
-    private Element game;
+    private GamePlay gamePlay;
 
     private char[][] gameMap;
     public int x = 0;
@@ -35,23 +31,24 @@ public class XOGamePlayerVsPlayer {
     private final char O_DOT = 'O';
 
     public static int gameCount;
-    public static int gameNumber;
+                                            //    public static int gameNumber;
     public static int gameStep;
 
     public XOGamePlayerVsPlayer(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
-        this.xmLout = new XMLout();
 
-        this.sc = new Scanner(System.in);
+        this.sc = gameMenu.sc;
     }
 
     //old/new
     public void start() {
         gameStep=1;
 
-        document = XMLout.createDocument();
-        gamePlay = document.createElement("gameplay");
-        document.appendChild(gamePlay);
+        gamePlay = new GamePlay();
+
+                                //        document = xmLout.createDocument();
+                                //        gamePlay = document.createElement("gameplay");
+                                //        document.appendChild(gamePlay);
 
         System.out.println("I glad to see you in classic XO game!\n" +
                 "The winner is the one who takes 3 cells in a row\n" +
@@ -61,9 +58,9 @@ public class XOGamePlayerVsPlayer {
         loadPlayers();
         //авторизация игроков
         authorization();
-        //XML новая партия игры
-        game = document.createElement("Game");
-        gamePlay.appendChild(game);
+                                //        //XML новая партия игры
+                                //        game = document.createElement("Game");
+                                //        gamePlay.appendChild(game);
         //инициация поля
         initMap();
         //отрисовка поля
@@ -83,10 +80,12 @@ public class XOGamePlayerVsPlayer {
 
         //сохранение игроков в файл строкой
         savePlayers();
-        //XML сохранение
-        String fileName = "game-" + gameNumber + ".xml";
-        XMLout.saveAsFile(document, fileName);
-        gameNumber++;
+
+        /****************** ПРОЦЕСС сохранения*/
+
+        new MenuSaveXOGame(gameMenu, gamePlay);
+        gameMenu.GameNumberPlusOne();
+
         //new
         againGameQuestion();
     }
@@ -144,12 +143,12 @@ public class XOGamePlayerVsPlayer {
                 if (isWin(dot)) {
                     System.out.println("FINISH");
 
-
-                    //XML победитель
-                    Element winner = XMLout.createXMLPlayer(document, player.getId(), player.getName(), String.valueOf(dot));
-
-                    Element gameResult = XMLout.createGameResult(document, winner);
-                    gamePlay.appendChild(gameResult);
+                    gamePlay.setGameResult(new GameResult(player));
+                                            //                    //XML победитель
+                                            //                    Element winner = xmLout.createPlayer(document, player.getId(), player.getName(), String.valueOf(dot));
+                                            //
+                                            //                    Element gameResult = xmLout.createGameResult(document, winner);
+                                            //                    gamePlay.appendChild(gameResult);
 
                     gameFinished =true;
                     //сохранение отчета в файл
@@ -169,8 +168,11 @@ public class XOGamePlayerVsPlayer {
 
     //new
     private void againGameQuestion() {
-        System.out.print("Are you want playing again? yes/no ");
-        if (sc.nextLine().toLowerCase(Locale.ROOT).equals("yes")) {
+        sc.nextLine();
+        System.out.print("\nAre you want playing again? yes/no ");
+
+        String answer = sc.nextLine();
+        if (answer.toLowerCase(Locale.ROOT).equals("yes")) {
             start();
         } else {
             gameMenu.changeGame();
@@ -182,12 +184,17 @@ public class XOGamePlayerVsPlayer {
 
         player1 = login("Player 1");
         player2 = login("Player 2");
+        player1.setId(1);
+        player2.setId(2);
 
-        //XML
-        Element playerOne = XMLout.createXMLPlayer(document, 1, player1.getName(), "X");
-        Element playerTwo = XMLout.createXMLPlayer(document, 2, player2.getName(), "O");
-        gamePlay.appendChild(playerOne);
-        gamePlay.appendChild(playerTwo);
+        gamePlay.getPlayers().add(player1);
+        gamePlay.getPlayers().add(player2);
+
+                                            //        //XML
+                                            //        Element playerOne = xmLout.createPlayer(document, 1, player1.getName(), "X");
+                                            //        Element playerTwo = xmLout.createPlayer(document, 2, player2.getName(), "O");
+                                            //        gamePlay.appendChild(playerOne);
+                                            //        gamePlay.appendChild(playerTwo);
 
         System.out.println("\nWelcome " + player1.toString() + "\n***********  VS  ***********");
         System.out.println("Welcome " + player2.toString());
@@ -254,8 +261,8 @@ public class XOGamePlayerVsPlayer {
         if (gameCount == 0) {
             System.out.println("FRIENDLY WIN");
 
-            Element gameResult = XMLout.createGameResult(document);
-            gamePlay.appendChild(gameResult);
+                                        //            Element gameResult = xmLout.createGameResult(document);
+                                        //            gamePlay.appendChild(gameResult);
             gameFinished = true;
             return false;
         }
@@ -270,9 +277,17 @@ public class XOGamePlayerVsPlayer {
         if (gameMap.length >= x && gameMap[0].length >= y && (gameMap[x - 1][y - 1] != 'X' && gameMap[x - 1][y - 1] != 'O')) {
             gameMap[x - 1][y - 1] = dot;
             gameCount--;
-            //XML ход
-            Element step = XMLout.createXMLStep(document, gameStep, gameCount%2==0?1:2, x, y);
-            game.appendChild(step);
+
+            Step step = new Step();
+            step.setPlayerId(player.getId());
+            step.setX(x);
+            step.setY(y);
+            step.setNum(gameStep);
+
+            gamePlay.getGame().getSteps().add(step);
+                                                        //            //XML ход
+                                                        //            Element step = xmLout.createStep(document, gameStep, gameCount%2==0?1:2, x, y);
+                                                        //            game.appendChild(step);
             gameStep++;
 
         } else {

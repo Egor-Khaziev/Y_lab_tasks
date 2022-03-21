@@ -1,4 +1,4 @@
-package com.egorkhaziev.y_lab.vsPlayer.XML;
+package com.egorkhaziev.y_lab.vsPlayer.Save.Model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Step {
 
-    private int numStep;
+    private int num;
     private int x;
     private int y;
     private int playerId;

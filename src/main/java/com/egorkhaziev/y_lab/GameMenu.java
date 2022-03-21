@@ -1,7 +1,7 @@
-package com.egorkhaziev.y_lab.menu;
+package com.egorkhaziev.y_lab;
 
 import com.egorkhaziev.y_lab.vsPC.XOGamePlayerVsPC;
-import com.egorkhaziev.y_lab.vsPlayer.XML.XMLXOGame;
+import com.egorkhaziev.y_lab.vsPlayer.Save.MenuViewXOGame;
 import com.egorkhaziev.y_lab.vsPlayer.XOGamePlayerVsPlayer;
 
 import java.util.Scanner;
@@ -10,10 +10,21 @@ public class GameMenu {
 
     public Scanner sc = new Scanner(System.in);
 
-    private XOGamePlayerVsPlayer PvP;
+    private int gameNumber;
+
+
+    public int getGameNumber() {
+        return gameNumber;
+    }
+
+    public void GameNumberPlusOne() {
+        gameNumber++;
+    }
+
+
 
     public GameMenu() {
-
+        gameNumber=1;
     }
 
     //выбор игры:
@@ -23,7 +34,8 @@ public class GameMenu {
         int gameNum;
 
         System.out.println(
-                "Please change your game: \n \n " +
+                "\n\n***********************************************************************\n" +
+                "\nPlease change your game: \n \n " +
                 "   1. XO game (modified) - Player vs PC (my experiment from 28.01.2021) \n " +
                 "   2. XO game - Player vs Player\n " +
                 "   3. Quit\n\n" +
@@ -46,8 +58,7 @@ public class GameMenu {
 
                 //игрок vs игрок
             case (2):
-                PvP = new XOGamePlayerVsPlayer(this);
-                PvP.start();
+                new XOGamePlayerVsPlayer(this).start();
                 break;
 
                 //выход
@@ -57,7 +68,7 @@ public class GameMenu {
 
             //XML Повтор игры
             case (0):
-                new XMLXOGame(this).start();
+                new MenuViewXOGame(this).start();
                 break;
 
             //Если введеное значение не соответствует вариантам
