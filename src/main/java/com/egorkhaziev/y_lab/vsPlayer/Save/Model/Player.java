@@ -31,11 +31,6 @@ public class Player implements Serializable {
 
     private String simbol;
 
-
-
-    // space for other feature
-
-
     public Player(String name) {
         this.name = name;
 
