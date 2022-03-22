@@ -1,9 +1,9 @@
 package com.egorkhaziev.y_lab.vsPlayer.Save.XML;
 
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.GamePlay;
+import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Player;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Step;
 import com.egorkhaziev.y_lab.vsPlayer.Save.ReadSaveGame;
-import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,8 +18,8 @@ import java.util.List;
 public class XMLin implements ReadSaveGame {
 
     List<Step> steps;
-    List<PlayerGame> playerGames;
-    PlayerGame winner;
+    List<Player> players;
+    Player winner;
 
     GamePlay gamePlay;
 
@@ -28,7 +28,7 @@ public class XMLin implements ReadSaveGame {
 
         gamePlay = new GamePlay();
         steps = new ArrayList<>();
-        playerGames = new ArrayList<>();
+        players = new ArrayList<>();
         winner = null;
 
 
@@ -39,7 +39,7 @@ public class XMLin implements ReadSaveGame {
 
 
         document.getDocumentElement().normalize();
-        NodeList playerList = document.getElementsByTagName("PlayerGame");
+        NodeList playerList = document.getElementsByTagName("Player");
         NodeList stepList = document.getElementsByTagName("Step");
         NodeList GameResult = document.getElementsByTagName("GameResult");
 
@@ -51,11 +51,11 @@ public class XMLin implements ReadSaveGame {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element ePlayer = (Element) node;
 
-                PlayerGame playerGame = new PlayerGame();
-                playerGame.setName(ePlayer.getAttribute("name"));
-                playerGame.setId(Integer.parseInt(ePlayer.getAttribute("id")));
+                Player player = new Player();
+                player.setName(ePlayer.getAttribute("name"));
+                player.setId(Integer.parseInt(ePlayer.getAttribute("id")));
 
-                playerGames.add(playerGame);
+                players.add(player);
             }
         }
 
@@ -80,15 +80,15 @@ public class XMLin implements ReadSaveGame {
         //победитель
         if (GameResult.getLength() > 0) {
 
-            if(playerGames.size()==3){
-                winner = playerGames.get(2);
+            if(players.size()==3){
+                winner = players.get(2);
             }
 
         }
 
-        gamePlay.setPlayerGames(playerGames);
-        gamePlay.getGame().setSteps(steps);
-        gamePlay.getGameResult().setWinner(winner);
+        gamePlay.setPlayer(players);
+        gamePlay.getGame().setStep(steps);
+        gamePlay.getGameResult().setPlayer(winner);
 
         return gamePlay;
     }

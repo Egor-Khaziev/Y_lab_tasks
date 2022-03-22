@@ -3,7 +3,7 @@ package com.egorkhaziev.y_lab.vsPlayer;
 import com.egorkhaziev.y_lab.GameMenu;
 import com.egorkhaziev.y_lab.vsPlayer.Save.MenuSaveXOGame;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.*;
-import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
+import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Player;
 
 import java.io.*;
 import java.util.*;
@@ -19,10 +19,10 @@ public class XOGamePlayerVsPlayer {
     public int y = 0;
     public Scanner sc;
 
-    private Map<String, PlayerGame> playerList = new HashMap<>();
+    private Map<String, Player> playerList = new HashMap<>();
 
-    private PlayerGame playerGame1;
-    private PlayerGame playerGame2;
+    private Player player1;
+    private Player player2;
 
     private boolean gameFinished;
 
@@ -37,7 +37,7 @@ public class XOGamePlayerVsPlayer {
     public XOGamePlayerVsPlayer(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
 
-        this.sc = gameMenu.sc;
+        this.sc = new Scanner(System.in);
     }
 
     //old/new
@@ -71,12 +71,12 @@ public class XOGamePlayerVsPlayer {
 
         //собственно сам процесс
         while(true){
-            if (gameLogic(playerGame1, X_DOT, playerGame2)) {break;}
-            if (gameLogic(playerGame2, O_DOT, playerGame1)) {break;}
+            if (gameLogic(player1, X_DOT, player2)) {break;}
+            if (gameLogic(player2, O_DOT, player1)) {break;}
         }
 
         //обновление листа игроков
-        baseRefresh(playerGame1, playerGame2);
+        baseRefresh(player1, player2);
 
         //сохранение игроков в файл строкой
         savePlayers();
@@ -109,7 +109,7 @@ public class XOGamePlayerVsPlayer {
     private void savePlayers() {
 
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("players.txt"))) {
-            for (Map.Entry<String, PlayerGame> entry: playerList.entrySet()) {
+            for (Map.Entry<String, Player> entry: playerList.entrySet()) {
                 objectOutputStream.writeObject(playerList);
             }
         } catch (IOException ioEx){
@@ -118,45 +118,45 @@ public class XOGamePlayerVsPlayer {
     }
 
     //new сохранение рейтинга
-    private void saveToFile(PlayerGame winPlayerGame, PlayerGame lossPlayerGame) {
+    private void saveToFile(Player winPlayer, Player lossPlayer) {
         try (BufferedWriter writter = new BufferedWriter(new FileWriter("rating.txt",true))) {
                 writter.write(new Date() + " - Game finished \n");
-                writter.write(winPlayerGame.getName() + " - Winner\n");
-                writter.write(lossPlayerGame.getName() + " - Loss\n");
+                writter.write(winPlayer.getName() + " - Winner\n");
+                writter.write(lossPlayer.getName() + " - Loss\n");
         }
         catch (IOException ioEx){
             ioEx.getMessage();
         }
     }
 
-    private void baseRefresh(PlayerGame playerGame1, PlayerGame playerGame2) {
-        playerList.put(playerGame1.getName(), playerGame1);
-        playerList.put(playerGame2.getName(), playerGame2);
+    private void baseRefresh(Player player1, Player player2) {
+        playerList.put(player1.getName(), player1);
+        playerList.put(player2.getName(), player2);
     }
 
     //new/old
-    private boolean gameLogic(PlayerGame playerGame, char dot, PlayerGame enemy) {
+    private boolean gameLogic(Player player, char dot, Player enemy) {
 
             if (readyToStep()) {
-                userStep(playerGame, dot);
+                userStep(player, dot);
                 paintMap();
                 if (isWin(dot)) {
                     System.out.println("FINISH");
 
-                    gamePlay.getGameResult().setWinner(playerGame);
+                    gamePlay.getGameResult().setPlayer(player);
                                             //                    //XML победитель
-                                            //                    Element winner = xmLout.createPlayer(document, playerGame.getId(), playerGame.getName(), String.valueOf(dot));
+                                            //                    Element winner = xmLout.createPlayer(document, player.getId(), player.getName(), String.valueOf(dot));
                                             //
                                             //                    Element gameResult = xmLout.createGameResult(document, winner);
                                             //                    gamePlay.appendChild(gameResult);
 
                     gameFinished =true;
                     //сохранение отчета в файл
-                    saveToFile(playerGame, enemy);
+                    saveToFile(player, enemy);
 
-                    playerGame.setSeriesWin(playerGame.getSeriesWin() + 1);
-                    playerGame.setWin(playerGame.getWin() + 1);
-                    System.out.println("WINNER:\n" + playerGame.toString());
+                    player.setSeriesWin(player.getSeriesWin() + 1);
+                    player.setWin(player.getWin() + 1);
+                    System.out.println("WINNER:\n" + player.toString());
 
                     enemy.setSeriesWin(0);
                     enemy.setLoss(enemy.getLoss() + 1);
@@ -168,7 +168,7 @@ public class XOGamePlayerVsPlayer {
 
     //new
     private void againGameQuestion() {
-        sc.nextLine();
+
         System.out.print("\nAre you want playing again? yes/no ");
 
         String answer = sc.nextLine();
@@ -182,29 +182,33 @@ public class XOGamePlayerVsPlayer {
     //new
     private void authorization() {
 
-        playerGame1 = login("PlayerGame 1");
-        playerGame2 = login("PlayerGame 2");
-        playerGame1.setId(1);
-        playerGame2.setId(2);
+        player1 = login("Player 1");
+        player2 = login("Player 2");
+        player1.setId(1);
+        player2.setId(2);
+        player1.setSimbol(String.valueOf(X_DOT));
+        player2.setSimbol(String.valueOf(O_DOT));
 
-        gamePlay.getPlayerGames().add(playerGame1);
-        gamePlay.getPlayerGames().add(playerGame2);
+        gamePlay.getPlayer().add(player1);
+        gamePlay.getPlayer().add(player2);
 
                                             //        //XML
-                                            //        Element playerOne = xmLout.createPlayer(document, 1, playerGame1.getName(), "X");
-                                            //        Element playerTwo = xmLout.createPlayer(document, 2, playerGame2.getName(), "O");
+                                            //        Element playerOne = xmLout.createPlayer(document, 1, player1.getName(), "X");
+                                            //        Element playerTwo = xmLout.createPlayer(document, 2, player2.getName(), "O");
                                             //        gamePlay.appendChild(playerOne);
                                             //        gamePlay.appendChild(playerTwo);
 
-        System.out.println("\nWelcome " + playerGame1.toString() + "\n***********  VS  ***********");
-        System.out.println("Welcome " + playerGame2.toString());
+        System.out.println("\nWelcome " + player1.toString() + "\n***********  VS  ***********");
+        System.out.println("Welcome " + player2.toString());
 
     }
 
     //new
-    private PlayerGame login(String player) {
+    private Player login(String player) {
 
         while (true) {
+
+
             System.out.print(player + " input your name, 3 symbol minimum: ");
 
             String name = sc.nextLine();
@@ -217,7 +221,7 @@ public class XOGamePlayerVsPlayer {
             //создание нового пользователя
             //(пользователь будет добавлен в базу по окончании игры)
             if (name.length() >= 3) {
-                return new PlayerGame(name);
+                return new Player(name);
             }
         }
     }
@@ -270,21 +274,21 @@ public class XOGamePlayerVsPlayer {
     }
 
     //old
-    private void userStep(PlayerGame playerGame, char dot) {
+    private void userStep(Player player, char dot) {
 
-        System.out.println(playerGame.getName() + " input your step (expire: \"2 2\")");
+        System.out.println(player.getName() + " input your step (expire: \"2 2\")");
         giveMe2Int();
         if (gameMap.length >= x && gameMap[0].length >= y && (gameMap[x - 1][y - 1] != 'X' && gameMap[x - 1][y - 1] != 'O')) {
             gameMap[x - 1][y - 1] = dot;
             gameCount--;
 
             Step step = new Step();
-            step.setPlayerId(playerGame.getId());
+            step.setPlayerId(player.getId());
             step.setX(x);
             step.setY(y);
             step.setNum(gameStep);
 
-            gamePlay.getGame().getSteps().add(step);
+            gamePlay.getGame().getStep().add(step);
                                                         //            //XML ход
                                                         //            Element step = xmLout.createStep(document, gameStep, gameCount%2==0?1:2, x, y);
                                                         //            game.appendChild(step);
@@ -293,7 +297,7 @@ public class XOGamePlayerVsPlayer {
         } else {
             paintMap();
             System.out.println("It is not correct or free");
-            userStep(playerGame, dot);
+            userStep(player, dot);
         }
     }
 

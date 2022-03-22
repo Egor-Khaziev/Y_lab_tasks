@@ -1,0 +1,64 @@
+{
+  "gamePlay" : {
+    "player" : [ {
+      "name" : "Maxxx",
+      "simbol" : "X",
+      "id" : 1
+    }, {
+      "name" : "zerOne",
+      "simbol" : "O",
+      "id" : 2
+    } ],
+    "game" : {
+      "step" : [ {
+        "num" : 1,
+        "playerId" : 1,
+        "x" : 1,
+        "y" : 1
+      }, {
+        "num" : 2,
+        "playerId" : 2,
+        "x" : 2,
+        "y" : 2
+      }, {
+        "num" : 3,
+        "playerId" : 1,
+        "x" : 2,
+        "y" : 1
+      }, {
+        "num" : 4,
+        "playerId" : 2,
+        "x" : 1,
+        "y" : 2
+      }, {
+        "num" : 5,
+        "playerId" : 1,
+        "x" : 3,
+        "y" : 2
+      }, {
+        "num" : 6,
+        "playerId" : 2,
+        "x" : 3,
+        "y" : 1
+      }, {
+        "num" : 7,
+        "playerId" : 1,
+        "x" : 1,
+        "y" : 3
+      }, {
+        "num" : 8,
+        "playerId" : 2,
+        "x" : 2,
+        "y" : 3
+      }, {
+        "num" : 9,
+        "playerId" : 1,
+        "x" : 3,
+        "y" : 3
+      } ]
+    },
+    "gameResult" : {
+      "player" : null
+    }
+  }
+}

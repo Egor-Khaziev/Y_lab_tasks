@@ -5,6 +5,9 @@ import com.egorkhaziev.y_lab.vsPlayer.Save.WriteSaveGame;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class JSONout implements WriteSaveGame {
 
     GamePlay gamePlay;
@@ -19,13 +22,23 @@ public class JSONout implements WriteSaveGame {
 
     @Override
     public void writeSaveGameFile(GamePlay gamePlay, String fileName) {
+
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = "";
         try {
-            jsonStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(gamePlay);
+            jsonStr = mapper
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(new Template(gamePlay));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println(jsonStr);
+
+
+        try(FileWriter file = new FileWriter(fileName)) {
+            file.write(jsonStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

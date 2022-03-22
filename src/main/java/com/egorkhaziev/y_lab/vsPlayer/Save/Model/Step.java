@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 public class Step {
 
     private int num;
+    private int playerId;
     private int x;
     private int y;
-    private int playerId;
+
 
 
 

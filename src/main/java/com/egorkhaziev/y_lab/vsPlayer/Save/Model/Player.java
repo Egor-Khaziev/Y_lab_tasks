@@ -1,6 +1,6 @@
-package com.egorkhaziev.y_lab.vsPlayer.model;
+package com.egorkhaziev.y_lab.vsPlayer.Save.Model;
 
-import com.egorkhaziev.y_lab.vsPlayer.Save.JSON.DTO.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,21 +12,31 @@ import java.io.Serializable;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerGame extends Player implements Serializable {
+public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private int Id;
+
     private String name;
+
+    @JsonIgnore
     private int win;
+
+    @JsonIgnore
     private int loss;
+
+    @JsonIgnore
     private int seriesWin;
 
-    private int Id;
+    private String simbol;
+
+
 
     // space for other feature
 
 
-    public PlayerGame(String name) {
+    public Player(String name) {
         this.name = name;
 
     }

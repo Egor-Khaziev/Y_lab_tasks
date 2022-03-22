@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 public class Game {
 
-    private List<Step> steps;
+    private List<Step> step;
 
     public Game() {
-        this.steps = new ArrayList<>();
+        this.step = new ArrayList<>();
     }
 }

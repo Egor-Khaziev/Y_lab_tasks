@@ -22,60 +22,65 @@ public class GameMenu {
     }
 
 
-
     public GameMenu() {
-        gameNumber=1;
+        gameNumber = 1;
     }
 
     //выбор игры:
     // 1. Вариант игры против ИИ написанный год назад
     // 2. Текущая задача. Игрок против игрока.
-    public void changeGame(){
+    public void changeGame() {
         int gameNum;
 
         System.out.println(
                 "\n\n***********************************************************************\n" +
-                "\nPlease change your game: \n \n " +
-                "   1. XO game (modified) - PlayerGame vs PC (my experiment from 28.01.2021) \n " +
-                "   2. XO game - PlayerGame vs PlayerGame\n " +
-                "   3. Quit\n\n" +
-                "   0. Repeat game ");
+                        "\nPlease change your game: \n \n " +
+                        "   1. XO game (modified) - Player vs PC (my experiment from 28.01.2021) \n " +
+                        "   2. XO game - Player vs Player\n " +
+                        "   3. Quit\n\n" +
+                        "   0. Repeat game ");
 
         System.out.print("\nInput your choice: ");
 
-        if (!sc.hasNextInt()) {
-            System.out.println("\nYour input is wrong. Please try again. \n");
-            changeGame();}
+        if (sc.hasNextInt()) {
+            gameNum = sc.nextInt();
 
-        gameNum = sc.nextInt();
-
-        switch (gameNum) {
+            switch (gameNum) {
 
                 //игрок vs ИИ
-            case  (1):
-                new XOGamePlayerVsPC(this).start();
-                break;
+                case (1):
+                    new XOGamePlayerVsPC(this).start();
+                    break;
 
                 //игрок vs игрок
-            case (2):
-                new XOGamePlayerVsPlayer(this).start();
-                break;
+                case (2):
+                    new XOGamePlayerVsPlayer(this).start();
+                    break;
 
                 //выход
-            case (3):
-                sc.close();
-                break;
+                case (3):
+                    sc.close();
+                    break;
 
-            //XML Повтор игры
-            case (0):
-                new MenuViewXOGame(this).start();
-                break;
+                //XML Повтор игры
+                case (0):
+                    new MenuViewXOGame(this).start();
+                    break;
 
-            //Если введеное значение не соответствует вариантам
-            default:
-                System.out.println("\nYour input is wrong. Please try again. \n");
-                changeGame();
-                break;
+                //Если введеное значение не соответствует вариантам
+                default:
+                    System.out.println("\nYour input is wrong. Please try again. \n");
+
+                    changeGame();
+                    break;
+            }
+        }
+
+        //Для решения StackOverFlow
+        if (sc.hasNextLine()) {
+            sc.nextLine();
+            System.out.println("\nYour input is wrong. Please try again. \n");
+            changeGame();
         }
     }
 }

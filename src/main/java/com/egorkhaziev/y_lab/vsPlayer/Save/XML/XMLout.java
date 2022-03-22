@@ -11,7 +11,7 @@ import javax.xml.transform.stream.StreamResult;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.GamePlay;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Step;
 import com.egorkhaziev.y_lab.vsPlayer.Save.WriteSaveGame;
-import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
+import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Player;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,8 +48,8 @@ public class XMLout implements WriteSaveGame {
         document.appendChild(gamePlayXML);
 
         //Добавление игроков
-        for (PlayerGame playerGame : gamePlay.getPlayerGames()){
-            Element playerXML = createPlayer(playerGame);
+        for (Player player : gamePlay.getPlayer()){
+            Element playerXML = createPlayer(player);
             gamePlayXML.appendChild(playerXML);
         }
 
@@ -58,17 +58,17 @@ public class XMLout implements WriteSaveGame {
         gamePlayXML.appendChild(game);
 
         //XML добавление Step
-        for (Step s: gamePlay.getGame().getSteps()) {
+        for (Step s: gamePlay.getGame().getStep()) {
             Element step = createStep(s);
             game.appendChild(step);
         }
 
         //XML победитель
-        if(gamePlay.getGameResult().getWinner()==null) {
+        if(gamePlay.getGameResult().getPlayer()==null) {
             Element gameResult = createGameResult();
             gamePlayXML.appendChild(gameResult);
         } else {
-            Element winner = createPlayer(gamePlay.getGameResult().getWinner());
+            Element winner = createPlayer(gamePlay.getGameResult().getPlayer());
             Element gameResult = createGameResult(winner);
             gamePlayXML.appendChild(gameResult);
         }
@@ -87,11 +87,11 @@ public class XMLout implements WriteSaveGame {
         return doc;
     }
 
-    private Element createPlayer( PlayerGame playerGame) {
-        Element playerXML = document.createElement("PlayerGame");
-        playerXML.setAttribute("id", String.valueOf(playerGame.getId()));
-        playerXML.setAttribute("name", playerGame.getName());
-        playerXML.setAttribute("symbol", String.valueOf(playerGame.getId()==1?X_DOT:O_DOT));
+    private Element createPlayer( Player player) {
+        Element playerXML = document.createElement("Player");
+        playerXML.setAttribute("id", String.valueOf(player.getId()));
+        playerXML.setAttribute("name", player.getName());
+        playerXML.setAttribute("symbol", String.valueOf(player.getId()==1?X_DOT:O_DOT));
         return playerXML;
     }
 

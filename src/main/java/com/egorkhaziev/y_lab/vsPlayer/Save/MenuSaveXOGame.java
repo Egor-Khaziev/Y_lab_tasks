@@ -16,8 +16,8 @@ public class MenuSaveXOGame {
 
     public MenuSaveXOGame(GameMenu gameMenu, GamePlay gamePlay) {
         this.gameMenu = gameMenu;
-        sc = gameMenu.sc;
         this.gamePlay = gamePlay;
+        sc = new Scanner(System.in);
         changeSave();
     }
 
@@ -45,15 +45,18 @@ public class MenuSaveXOGame {
             //игрок vs ИИ
             case (1):
                 new JSONout(gamePlay, gameMenu.getGameNumber());
+
                 break;
 
             //игрок vs игрок
             case (2):
                 new XMLout(gamePlay, gameMenu.getGameNumber());
+
                 break;
 
             //выход
             case (0):
+
                 break;
 
             //Если введеное значение не соответствует вариантам

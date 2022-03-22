@@ -2,8 +2,8 @@ package com.egorkhaziev.y_lab.vsPlayer.Save;
 
 import com.egorkhaziev.y_lab.GameMenu;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.GamePlay;
+import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Player;
 import com.egorkhaziev.y_lab.vsPlayer.Save.Model.Step;
-import com.egorkhaziev.y_lab.vsPlayer.model.PlayerGame;
 
 import java.util.List;
 
@@ -20,29 +20,27 @@ public class ViewSaveGame {
 
     public void play(GamePlay gamePlay) {
 
-        List<Step> steps = gamePlay.getGame().getSteps();
-        String winner;
-        List<PlayerGame> playerGames = gamePlay.getPlayerGames();
+        List<Step> steps = gamePlay.getGame().getStep();
+        String winner = null;
+        List<Player> players = gamePlay.getPlayer();
 
-        if(gamePlay.getPlayerGames().size()==3){
-            winner = gamePlay.getPlayerGames().get(2).getName();
-        } else {
-            winner = null;
+        if (gamePlay.getGameResult().getPlayer()!=null) {
+            winner = gamePlay.getGameResult().getPlayer().getName();
         }
 
 
 
-        System.out.println(playerGames.get(0).getName() + " VS " + playerGames.get(1).getName());
+        System.out.println(players.get(0).getName() + " VS " + players.get(1).getName());
         initMap();
         paintMap();
 
         for (int i = 0; i <= steps.size()-1; i++) {
 
-            int x = gamePlay.getGame().getSteps().get(i).getX();
-            int y = gamePlay.getGame().getSteps().get(i).getY();
+            int x = gamePlay.getGame().getStep().get(i).getX();
+            int y = gamePlay.getGame().getStep().get(i).getY();
             gameMap[x - 1][y - 1] = ((i % 2 == 1) ? X_DOT : O_DOT);
             paintMap();
-            System.out.println("step "+((i % 2 == 1) ? playerGames.get(1).getName() : playerGames.get(0).getName()));
+            System.out.println("step "+((i % 2 == 1) ? players.get(1).getName() : players.get(0).getName()));
             sleeping(1000);
         }
 
