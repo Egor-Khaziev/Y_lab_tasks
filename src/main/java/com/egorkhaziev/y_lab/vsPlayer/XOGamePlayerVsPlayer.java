@@ -31,7 +31,6 @@ public class XOGamePlayerVsPlayer {
     private final char O_DOT = 'O';
 
     public static int gameCount;
-                                            //    public static int gameNumber;
     public static int gameStep;
 
     public XOGamePlayerVsPlayer(GameMenu gameMenu) {
@@ -46,10 +45,6 @@ public class XOGamePlayerVsPlayer {
 
         gamePlay = new GamePlay();
 
-                                //        document = xmLout.createDocument();
-                                //        gamePlay = document.createElement("gameplay");
-                                //        document.appendChild(gamePlay);
-
         System.out.println("I glad to see you in classic XO game!\n" +
                 "The winner is the one who takes 3 cells in a row\n" +
                 "Good luck! The strongest will win!\n");
@@ -58,9 +53,7 @@ public class XOGamePlayerVsPlayer {
         loadPlayers();
         //авторизация игроков
         authorization();
-                                //        //XML новая партия игры
-                                //        game = document.createElement("Game");
-                                //        gamePlay.appendChild(game);
+
         //инициация поля
         initMap();
         //отрисовка поля
@@ -69,7 +62,7 @@ public class XOGamePlayerVsPlayer {
 
         gameFinished = false;
 
-        //собственно сам процесс
+        //собственно сам процесс игры
         while(true){
             if (gameLogic(player1, X_DOT, player2)) {break;}
             if (gameLogic(player2, O_DOT, player1)) {break;}
@@ -80,8 +73,6 @@ public class XOGamePlayerVsPlayer {
 
         //сохранение игроков в файл строкой
         savePlayers();
-
-        /****************** ПРОЦЕСС сохранения*/
 
         new MenuSaveXOGame(gameMenu, gamePlay);
         gameMenu.GameNumberPlusOne();
@@ -144,11 +135,6 @@ public class XOGamePlayerVsPlayer {
                     System.out.println("FINISH");
 
                     gamePlay.getGameResult().setPlayer(player);
-                                            //                    //XML победитель
-                                            //                    Element winner = xmLout.createPlayer(document, player.getId(), player.getName(), String.valueOf(dot));
-                                            //
-                                            //                    Element gameResult = xmLout.createGameResult(document, winner);
-                                            //                    gamePlay.appendChild(gameResult);
 
                     gameFinished =true;
                     //сохранение отчета в файл
@@ -191,12 +177,6 @@ public class XOGamePlayerVsPlayer {
 
         gamePlay.getPlayer().add(player1);
         gamePlay.getPlayer().add(player2);
-
-                                            //        //XML
-                                            //        Element playerOne = xmLout.createPlayer(document, 1, player1.getName(), "X");
-                                            //        Element playerTwo = xmLout.createPlayer(document, 2, player2.getName(), "O");
-                                            //        gamePlay.appendChild(playerOne);
-                                            //        gamePlay.appendChild(playerTwo);
 
         System.out.println("\nWelcome " + player1.toString() + "\n***********  VS  ***********");
         System.out.println("Welcome " + player2.toString());
@@ -264,9 +244,6 @@ public class XOGamePlayerVsPlayer {
     private boolean readyToStep() {
         if (gameCount == 0) {
             System.out.println("FRIENDLY WIN");
-
-                                        //            Element gameResult = xmLout.createGameResult(document);
-                                        //            gamePlay.appendChild(gameResult);
             gameFinished = true;
             return false;
         }
@@ -289,9 +266,6 @@ public class XOGamePlayerVsPlayer {
             step.setNum(gameStep);
 
             gamePlay.getGame().getStep().add(step);
-                                                        //            //XML ход
-                                                        //            Element step = xmLout.createStep(document, gameStep, gameCount%2==0?1:2, x, y);
-                                                        //            game.appendChild(step);
             gameStep++;
 
         } else {
