@@ -1,0 +1,46 @@
+<div>
+    <p></p>
+    <h3>ВРЕМЯ БИТВЫ!</h3>
+    <p></p>
+
+    <div class="row g-2">
+        <div class="col-6 col-md-2">
+            <form novalidate ng-submit="loadProducts()">
+            </form>
+        </div>
+        <div class="col-sm-6 col-md-10">
+
+            <table class="table table-hover">
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tbody>
+                <tr ng-repeat="p in ProductsPage.content">
+                    <td><button class="btn btn-primary" ng-click="addToCart(p.id)">{{p.id}}</button></td>
+                    <td><button class="btn btn-primary" ng-click="addToCart(p.id)">{{p.title}}</button></td>
+                    <td><button class="btn btn-primary" ng-click="addToCart(p.id)">{{p.price}}</button></td>
+
+                </tr>
+                </tbody>
+
+                <form class="align-middle" ng-submit="checkOut()">
+                    <div class="input-group-sm mb-3" style="padding: 4px;">
+                        <form novalidate>
+                            <input class="form-control" type="text" placeholder="Игрок1" ng-model="users.player1">
+                            <p></p>
+                            <input class="form-control" type="text" placeholder="Игрок2" ng-model="users.player2">
+                            <p></p>
+                            <button class="btn btn-primary" ng-click="checkOut()" >Старт</button>
+                        </form>
+
+                    </div>
+            </table>
+            <p></p>
+
+
+
+        </div>
+    </div>
+</div>

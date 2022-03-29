@@ -1,0 +1,48 @@
+{
+  "gamePlay" : {
+    "player" : [ {
+      "name" : "Maxxx",
+      "simbol" : "X",
+      "id" : 1
+    }, {
+      "name" : "тест",
+      "simbol" : "O",
+      "id" : 2
+    } ],
+    "game" : {
+      "step" : [ {
+        "num" : 0,
+        "playerId" : 1,
+        "x" : 1,
+        "y" : 1
+      }, {
+        "num" : 1,
+        "playerId" : 2,
+        "x" : 2,
+        "y" : 1
+      }, {
+        "num" : 2,
+        "playerId" : 1,
+        "x" : 1,
+        "y" : 2
+      }, {
+        "num" : 3,
+        "playerId" : 2,
+        "x" : 2,
+        "y" : 2
+      }, {
+        "num" : 4,
+        "playerId" : 1,
+        "x" : 1,
+        "y" : 3
+      } ]
+    },
+    "gameResult" : {
+      "player" : {
+        "name" : "Maxxx",
+        "simbol" : "X",
+        "id" : 1
+      }
+    }
+  }
+}
